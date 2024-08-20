@@ -1,0 +1,12 @@
+# Ignore Idea files
+.idea/
+*.iml
+
+# Ignore build output directory
+target
+
+# Ignore logs output directory
+logs
+
+# Ignore MacOS meta-data
+.DS_Store
