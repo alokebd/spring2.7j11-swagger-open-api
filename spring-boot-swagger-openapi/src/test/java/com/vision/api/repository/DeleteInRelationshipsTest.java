@@ -64,8 +64,8 @@ public class DeleteInRelationshipsTest {
     }
 
     @Test
-    @DisplayName("when deleting Authors, then Books should be deleted too")
-    public void whenDeletingAuthors_thenBooksShouldAlsoBeDeleted() {
+    @DisplayName("Test_1: when deleting Authors, then Books should be deleted too")
+    public void test_1_whenDeletingAuthors_thenBooksShouldAlsoBeDeleted() {
 
         authorRepository.delete(author1);
         authorRepository.delete(author2);
@@ -75,8 +75,8 @@ public class DeleteInRelationshipsTest {
     }
 
     @Test
-    @DisplayName("when deleting Books, then Author should not be deleted")
-    public void whenDeletingBooks_thenAuthorShouldNotBeDeleted() {
+    @DisplayName("Test 2: when deleting Books, then Author should not be deleted")
+    public void test_2_whenDeletingBooks_thenAuthorShouldNotBeDeleted() {
 
         //given
         long authorCount = authorRepository.count();

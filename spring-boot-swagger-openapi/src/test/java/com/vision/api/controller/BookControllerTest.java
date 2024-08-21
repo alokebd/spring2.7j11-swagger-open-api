@@ -19,8 +19,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
@@ -52,8 +50,8 @@ public class BookControllerTest {
     private BookService bookService;
 
     @Test
-    @DisplayName("get Book, should return expected Book")
-    public void getBookShouldReturn200() throws Exception {
+    @DisplayName("Test 1: get Book, should return expected Book")
+    public void test_1_get_Book_Should_Return_200() throws Exception {
 
         //given
         long bookId = 0L;
@@ -66,8 +64,8 @@ public class BookControllerTest {
     }
 
     @Test
-    @DisplayName("get Book list, should return complete Book list")
-    public void getBookListShouldReturn200() throws Exception {
+    @DisplayName("Test 2: get Book list, should return complete Book list")
+    public void test_2_getBookList_ShouldReturn_200() throws Exception {
 
         //given
         given(this.bookService.list()).willReturn(new ArrayList<>());
@@ -79,8 +77,8 @@ public class BookControllerTest {
     }
 
     @Test
-    @DisplayName("get non existing Book, should return 404")
-    public void getNotExistingBookShouldReturn404() throws Exception {
+    @DisplayName("Test 3: get non existing Book, should return 404")
+    public void test_3_getNotExistingBook_ShouldReturn_404() throws Exception {
 
         //given
         long nonExistentBookId = 404L;
@@ -93,14 +91,28 @@ public class BookControllerTest {
     }
 
     @Test
-    @DisplayName("create Book, should return 201")
-    public void createBookShouldReturn201() throws Exception {
+    @DisplayName("Test 4: create Book, should return 201")
+    public void test_4_createBook_ShouldReturn_201() throws Exception {
 
         //given
-        AuthorDto defaultAuthor = AuthorDto.builder().id(0L).build();
-        BookDto book = BookDto.builder().description("com.vision.api").genre("Drama").title("test").author(defaultAuthor).build();
+    	long authorId = 1L;
+    	long bookID = 0L;
+    	AuthorDto defaultAuthor = AuthorDto.builder()
+        		.id(authorId)
+        		.email("test@gmail.com")
+        		.firstName("Test")
+        		.lastName("Surname").build();
+    	
+        BookDto book = BookDto.builder()
+        		.id(bookID)
+        		.description("com.vision.api")
+        		.genre("Drama")
+        		.price(new BigDecimal(2.0))
+        		.title("test")
+        		.author(defaultAuthor)
+        		.build();
         String json = objectMapper.writeValueAsString(book);
-        when(this.bookService.create(book)).thenReturn(0L);
+        when(this.bookService.create(book)).thenReturn(bookID);
 
         //when-then
         this.mockMvc.perform(post("/api/v1/books/")
@@ -110,29 +122,43 @@ public class BookControllerTest {
     }
 
     @Test
-    @DisplayName("create existing Book id, should return 422")
-    public void createExistingBookIdShouldReturn422() throws Exception {
+    @DisplayName("Test 5: create existing Book id, should return 409")
+    public void test_5_createExistingBookId_ShouldReturn_409() throws Exception {
 
         //given
-        long existingBookId = 0L;
-        AuthorDto defaultAuthor = AuthorDto.builder().id(existingBookId).build();
-        BookDto book1 = BookDto.builder().description("com.vision.api").genre("Drama").title("test").author(defaultAuthor).build();
+        long existingBookId = 1L;
+        //AuthorDto defaultAuthor = AuthorDto.builder().id(existingBookId).build();
+        long authorId = 1L;
+        AuthorDto defaultAuthor = AuthorDto.builder()
+        		.id(authorId)
+        		.email("test@gmail.com")
+        		.firstName("Test")
+        		.lastName("Surname").build();
+        
+        BookDto book1 = BookDto.builder()
+        		.description("com.vision.api")
+        		.genre("Drama")
+        		.title("test")
+        		.price(new BigDecimal(2.0))
+        		.author(defaultAuthor)
+        		.build();
         String json = objectMapper.writeValueAsString(book1);
-        when(this.bookService.create(book1)).thenThrow(new DuplicatedEntityException());
+        when(this.bookService.create(book1)).thenThrow(new DuplicatedEntityException("Entity Book with id " + existingBookId + " alrebooky exists"));
 
         //when-then
         this.mockMvc.perform(post("/api/v1/books/")
                 .contentType(APPLICATION_JSON_UTF8)
                 .content(json))
-                .andExpect(status().isUnprocessableEntity());
+                .andExpect(status().isConflict());
     }
 
     @Test
-    @DisplayName("create incomplete Book, should return 400")
-    public void createIncompleteBookShouldReturn400() throws Exception {
+    @DisplayName("Test 6: create incomplete Book, should return 400")
+    public void test_6_createIncompleteBook_ShouldReturn_400() throws Exception {
 
         //given
-        BookDto book1 = BookDto.builder().description("com.vision.api").build();
+        BookDto book1 = BookDto.builder().
+        		description("com.vision.api").build();
         String json = objectMapper.writeValueAsString(book1);
 
         //when-then
@@ -140,11 +166,10 @@ public class BookControllerTest {
                 .contentType(APPLICATION_JSON_UTF8)
                 .content(json))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.timestamp", is(notNullValue())))
-                .andExpect(jsonPath("$.errors").isArray())
-                .andExpect(jsonPath("$.errors", hasSize(3)))
-                .andExpect(jsonPath("$.errors", hasItem("Title is mandatory")))
-                .andExpect(jsonPath("$.errors", hasItem("Genre is mandatory")));
+                .andExpect(jsonPath("$.message", is(notNullValue())))
+                .andExpect(jsonPath("$.message", is(containsString("Title is mandatory"))))
+                .andExpect(jsonPath("$.message", is(containsString("Genre is mandatory"))))
+                .andExpect(jsonPath("$.message", is(containsString("Please provide a price"))));
     }
 
 

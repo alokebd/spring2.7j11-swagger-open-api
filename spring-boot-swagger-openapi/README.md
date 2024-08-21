@@ -11,6 +11,7 @@
   * H2
   * lombok
   * ModuleMapper
+  * Spring Entity Validation 
   * Swagger Open API
 
 ### Testing

@@ -38,8 +38,8 @@ public class BookServiceTest {
     }
 
     @Test
-    @DisplayName("given Book id, when get Book, then Book is retrieved")
-    void givenBookId_whenGetBook_ThenBookRetrieved() {
+    @DisplayName("Test 1: given Book id, when get Book, then Book is retrieved")
+    void test_1_givenBookId_whenGetBook_ThenBookRetrieved() {
 
         //given
         long existingBookId = 0L;
@@ -56,8 +56,8 @@ public class BookServiceTest {
     }
 
     @Test
-    @DisplayName("given Book id, when get non existing Book, then exception is thrown")
-    void givenBookId_whenGetNonExistingBook_ThenExceptionThrown() {
+    @DisplayName("Test 2: given Book id, when get non existing Book, then exception is thrown")
+    void test_2_givenBookId_whenGetNonExistingBook_ThenExceptionThrown() {
 
         //given
         Long nonExistingBookId = 404L;
@@ -72,8 +72,8 @@ public class BookServiceTest {
     }
 
     @Test
-    @DisplayName("when list Book, then Books are retrieved")
-    void whenListBooks_ThenBooksRetrieved() {
+    @DisplayName("Test 3: when list Book, then Books are retrieved")
+    void test_3_whenListBooks_ThenBooksRetrieved() {
 
         //given
         long existingBookId = 0L;
@@ -90,8 +90,8 @@ public class BookServiceTest {
     }
 
     @Test
-    @DisplayName("given Book data, when create new Book, then Book id is returned")
-    void givenBookData_whenCreateBook_ThenBookIdReturned() {
+    @DisplayName("Test 4: given Book data, when create new Book, then Book id is returned")
+    void test_4_givenBookData_whenCreateBook_ThenBookIdReturned() {
 
         //given
         BookDto bookDto1 = BookDto.builder().description("com.vision.api").genre("Terror").title("title").price(BigDecimal.TEN).build();
@@ -107,8 +107,8 @@ public class BookServiceTest {
     }
 
     @Test
-    @DisplayName("given Book incomplete data, when create new Book, then exception is thrown")
-    void givenBookIncompleteData_whenCreateBook_ThenExceptionIsThrown() {
+    @DisplayName("Test 5: given Book incomplete data, when create new Book, then exception is thrown")
+    void test_5_givenBookIncompleteData_whenCreateBook_ThenExceptionIsThrown() {
 
         //given
         BookDto bookDto1 = BookDto.builder().description("com.vision.api").genre("Terror").title("title").price(BigDecimal.TEN).build();

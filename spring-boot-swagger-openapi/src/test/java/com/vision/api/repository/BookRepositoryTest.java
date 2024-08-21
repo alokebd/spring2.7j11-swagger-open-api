@@ -58,8 +58,8 @@ public class BookRepositoryTest {
     }
 
     @Test
-    @DisplayName("when deleteById from repository, then deleting should be successful")
-    public void whenDeleteByIdFromRepository_thenDeletingShouldBeSuccessful() {
+    @DisplayName("Test 1: when deleteById from repository, then deleting should be successful")
+    public void test_1_when_DeleteById_FromRepository_then_Deleting_Should_BeSuccessful() {
         bookRepository.deleteById(book1.getId());
 
         assertEquals(initialCount+1, bookRepository.count());
@@ -67,8 +67,8 @@ public class BookRepositoryTest {
 
     @Test
     @Transactional
-    @DisplayName("when delete from derived query, then deleting should be successful")
-    public void whenDeleteFromDerivedQuery_thenDeletingShouldBeSuccessful() {
+    @DisplayName("Test 2: when delete from derived query, then deleting should be successful")
+    public void test_2_when_DeleteFrom_DerivedQuery_then_DeletingShouldBeSuccessful() {
         long deletedRecords = bookRepository.deleteByTitle("title1");
 
         assertEquals(1, deletedRecords);
@@ -76,8 +76,8 @@ public class BookRepositoryTest {
     }
 
     @Test
-    @DisplayName("when deleteAll  from repository, then repository should be restored")
-    public void whenDeleteAllFromRepository_thenRepositoryShouldBeRestored() {
+    @DisplayName("Test 3: when deleteAll  from repository, then repository should be restored")
+    public void test_3_whenDeleteAll_FromRepository_then_Repository_ShouldBe_Restored() {
         bookRepository.deleteAll(Arrays.asList(book1, book2));
 
         assertEquals(initialCount, bookRepository.count());

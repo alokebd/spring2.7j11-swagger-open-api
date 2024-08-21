@@ -16,6 +16,7 @@ import com.vision.api.service.BookService;
 import java.net.URI;
 import java.util.List;
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 
 @RestController
 @RequestMapping("/api")
@@ -52,7 +53,7 @@ public class BookController {
             @ApiResponse(responseCode = "404", description = "Book not found",
                     content = @Content) })
     @GetMapping(path = "/v1/books/{id}", produces = {"application/json"})
-    public ResponseEntity<BookDto> get(@PathVariable("id") Long bookId) {
+    public ResponseEntity<BookDto> get(@PathVariable("id") @Min(1) Long bookId) {
 
         log.info("GET /api/v1/books/"+bookId);
         return ResponseEntity.ok(bookService.get(bookId));

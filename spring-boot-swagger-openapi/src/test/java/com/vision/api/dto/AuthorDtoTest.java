@@ -19,8 +19,8 @@ public class AuthorDtoTest {
     private ModelMapper modelMapper = new ModelMapper();
 
     @Test
-    @DisplayName("when convert Author entity to Author dto, then correct")
-    public void whenConvertAuthorEntityToAuthorDto_thenCorrect() {
+    @DisplayName("Test 1: when convert Author entity to Author dto, then correct")
+    public void test_1_whenConvert_AuthorEntity_To_AuthorDto_thenCorrect() {
 
         //given
         Author author = Author.builder().id(1L).email("test@com.vision.api.com").firstName("Test").lastName("Surname").build();
@@ -36,8 +36,8 @@ public class AuthorDtoTest {
     }
 
     @Test
-    @DisplayName("when convert Author dto to Author entity, then correct")
-    public void whenConvertAuthorDtoToAuthorEntity_thenCorrect() {
+    @DisplayName("Test 2: when convert Author dto to Author entity, then correct")
+    public void test_2_whenConvert_AuthorDto_ToAuthorEntity_thenCorrect() {
 
         //given
         AuthorDto authorDto = AuthorDto.builder().id(1L).email("test@com.vision.api.com").firstName("Test").lastName("Surname").build();

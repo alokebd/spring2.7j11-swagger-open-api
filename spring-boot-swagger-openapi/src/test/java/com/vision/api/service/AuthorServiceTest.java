@@ -35,8 +35,8 @@ public class AuthorServiceTest {
     }
 
     @Test
-    @DisplayName("given Author data, when create new Author, then Author id is returned")
-    void givenAuthorData_whenCreateAuthor_ThenAuthorIdReturned() {
+    @DisplayName("Test 1: given Author data, when create new Author, then Author id is returned")
+    void test_1_given_AuthorData_whenCreateAuthor_ThenAuthorIdReturned() {
 
         //given
         AuthorDto authorDto1 = AuthorDto.builder().email("test@com.vision.api.com").firstName("Test").lastName("Surname").build();
@@ -52,8 +52,8 @@ public class AuthorServiceTest {
     }
 
     @Test
-    @DisplayName("given Ad incomplete data, when create new Ad, then exception is thrown")
-    void givenAdIncompleteData_whenCreateAd_ThenExceptionIsThrown() {
+    @DisplayName("Test 2: given Ad incomplete data, when create new Ad, then exception is thrown")
+    void test_2_givenAdIncompleteData_whenCreateAd_ThenExceptionIsThrown() {
 
         //given
         AuthorDto authorDto1 = AuthorDto.builder().email("test@com.vision.api.com").lastName("Surname").build();
@@ -69,8 +69,8 @@ public class AuthorServiceTest {
     }
 
     @Test
-    @DisplayName("given Author id, when delete Author, then Author is retrieved")
-    void givenAuthorId_whenDeleteAuthor_ThenAuthorRetrieved() {
+    @DisplayName("Test 3: given Author id, when delete Author, then Author is retrieved")
+    void test_3_givenAuthorId_whenDeleteAuthor_ThenAuthorRetrieved() {
 
         //given
         long existingAuthorId = 0L;
@@ -87,8 +87,8 @@ public class AuthorServiceTest {
     }
 
     @Test
-    @DisplayName("given Author id, when delete non existing Author, then exception is thrown")
-    void givenAuthorId_whenDeleteNonExistingAuthor_ThenExceptionThrown() {
+    @DisplayName("Test4: given Author id, when delete non existing Author, then exception is thrown")
+    void test_4_givenAuthorId_whenDeleteNonExistingAuthor_ThenExceptionThrown() {
 
         //given
         Long nonExistingAuthorId = 404L;

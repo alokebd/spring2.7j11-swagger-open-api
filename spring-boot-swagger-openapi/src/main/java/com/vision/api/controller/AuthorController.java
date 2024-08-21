@@ -16,6 +16,8 @@ import com.vision.api.dto.AuthorResponseDto;
 import com.vision.api.service.AuthorService;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
+
 import java.net.URI;
 
 @RestController
@@ -57,7 +59,7 @@ public class AuthorController {
             @ApiResponse(responseCode = "500", description = "Internal Server Error",
                     content = @Content) })
     @DeleteMapping(path = "/v1/authors/{id}", produces = {"application/json"})
-    public ResponseEntity<Void> delete(@PathVariable("id") Long authorId) {
+    public ResponseEntity<Void> delete(@PathVariable("id") @Min(1) Long authorId) {
 
         log.info("DELETE /api/v1/authors/"+authorId);
         authorService.delete(authorId);
@@ -66,7 +68,7 @@ public class AuthorController {
     
     @Operation(summary = "Update an existing author")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Updated the author"),
+            @ApiResponse(responseCode = "201", description = "Updated the author"),
             @ApiResponse(responseCode = "400", description = "Bad request",
                     content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal Server Error",
@@ -90,7 +92,7 @@ public class AuthorController {
             @ApiResponse(responseCode = "500", description = "Internal Server Error",
                     content = @Content) })
     @GetMapping(path = "/v1/authors/{id}", produces = {"application/json"})
-    public ResponseEntity<AuthorDto> getAuthorById(@PathVariable("id") Long authorId){
+    public ResponseEntity<AuthorDto> getAuthorById(@PathVariable("id")@Min(1) Long authorId){
     	
     	 log.info("GET /api/v1/authors/"+authorId);
     	 AuthorDto dto = authorService.getAuthorById(authorId);
@@ -105,7 +107,7 @@ public class AuthorController {
             @ApiResponse(responseCode = "500", description = "Internal Server Error",
                     content = @Content) })
     @GetMapping(path = "/v1/books/authors/{id}", produces = {"application/json"})
-    public ResponseEntity<AuthorResponseDto> getAllBooksByAuthorId(@PathVariable("id") Long authorId){
+    public ResponseEntity<AuthorResponseDto> getAllBooksByAuthorId(@PathVariable("id") @Min(1) Long authorId){
     	
     	 log.info("GET /api/v1/books/authors/"+authorId);
     	 AuthorResponseDto dto = this.authorService.getBooksByAuthorId(authorId);

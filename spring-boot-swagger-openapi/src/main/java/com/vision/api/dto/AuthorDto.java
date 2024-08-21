@@ -26,6 +26,6 @@ public class AuthorDto {
     private String lastName;
 
     @NotBlank(message = "Email is mandatory")
-    @Email(message = "A valid mail address is mandatory")
+    @Email(regexp = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}", message = "A valid mail address is mandatory")
     private String email;
 }

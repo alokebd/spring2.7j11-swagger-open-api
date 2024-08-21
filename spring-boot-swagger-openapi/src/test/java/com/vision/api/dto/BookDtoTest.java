@@ -19,8 +19,8 @@ public class BookDtoTest {
     private ModelMapper modelMapper = new ModelMapper();
 
     @Test
-    @DisplayName("when convert Book entity to Book dto, then correct")
-    public void whenConvertBookEntityToBookDto_thenCorrect() {
+    @DisplayName("Test 1: when convert Book entity to Book dto, then correct")
+    public void test_1_whenConvert_BookEntity_To_BookDto_thenCorrect() {
 
         //given
         Book book = Book.builder().id(1L).title("Example").genre("Comedy").build();
@@ -35,8 +35,8 @@ public class BookDtoTest {
     }
 
     @Test
-    @DisplayName("when convert Book dto to Book entity, then correct")
-    public void whenConvertBookDtoToBookEntity_thenCorrect() {
+    @DisplayName("Test 2: when convert Book dto to Book entity, then correct")
+    public void test_2_whenConvert_BookDto_To_BookEntity_thenCorrect() {
 
         //given
         BookDto bookDto = BookDto.builder().id(1L).title("Example").genre("Comedy").build();

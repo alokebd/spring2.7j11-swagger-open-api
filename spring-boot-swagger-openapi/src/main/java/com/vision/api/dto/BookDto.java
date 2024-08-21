@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
@@ -25,6 +26,8 @@ public class BookDto {
     @NotNull(message = "Genre is mandatory")
     private String genre;
 
+    @NotNull(message = "Please provide a price")
+    @DecimalMin("1.00")
     private BigDecimal price;
 
     @NotNull(message = "Author is mandatory")
