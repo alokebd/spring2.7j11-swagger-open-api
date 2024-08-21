@@ -22,7 +22,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleEntityNotFoundException(EntityNotFoundException exception) {
 		String message = (exception.getMessage() == null)? "Message not found": exception.getMessage();
 		
-		log.error("EntityNotFoundException: " + message);
+		log.error("EntityNotFoundException -message: " + message);
 		return ResponseEntity.status(HttpStatus.NOT_FOUND)
 				.body(new ErrorResponse(HttpStatus.NOT_FOUND.value(), message));
     }
@@ -32,7 +32,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleDuplicatedEntityException(DuplicatedEntityException exception) {
 		String message = (exception.getMessage() == null)? "Already Exist ": exception.getMessage();
 		
-		log.error("DuplicatedEntityException: " + message);
+		log.error("DuplicatedEntityException -message: " + message);
 		return ResponseEntity.status(HttpStatus.CONFLICT)
 				.body(new ErrorResponse(HttpStatus.CONFLICT.value(), message));
     }

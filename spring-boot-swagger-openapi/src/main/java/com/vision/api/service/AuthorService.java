@@ -67,12 +67,14 @@ public class AuthorService {
     public AuthorResponseDto getBooksByAuthorId(long authorId) {
     	  Author author = authorRepository.findById(authorId).orElseThrow(() -> new EntityNotFoundException("Author not found by author id: "+authorId));
     	  AuthorDto authorDto = modelMapper.map(author, AuthorDto.class);
-    	  
-    		  
+    	      		  
     	  List<BookDto> books =bookService.getAllBooksByAutherId(authorId);
+    	  if (books== null) {
+    		  throw new EntityNotFoundException("Book not found");
+    	  }
     	  List<BookResponseDto> dtos = books
     			  .stream()
-    			  .map(user -> modelMapper.map(user, BookResponseDto.class))
+    			  .map(book -> modelMapper.map(book, BookResponseDto.class))
     			  .collect(Collectors.toList());
 
     	  

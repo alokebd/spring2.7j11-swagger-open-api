@@ -83,7 +83,7 @@ public class BookControllerTest {
         //given
         long nonExistentBookId = 404L;
         given(this.bookService.get(nonExistentBookId))
-                .willThrow(new EntityNotFoundException());
+                .willThrow(new EntityNotFoundException("Book not found for book id: "+nonExistentBookId));
 
         //when-then
         this.mockMvc.perform(get("/api/v1/books/"+nonExistentBookId))
@@ -172,5 +172,33 @@ public class BookControllerTest {
                 .andExpect(jsonPath("$.message", is(containsString("Please provide a price"))));
     }
 
+    @Test
+    @DisplayName("Test 7: update Book, should return 201")
+    public void test_7_createBook_ShouldReturn_201() throws Exception {
+        //given
+    	long authorId = 1L;
+    	long bookID = 1L;
+    	AuthorDto defaultAuthor = AuthorDto.builder()
+        		.id(authorId)
+        		.email("test@gmail.com")
+        		.firstName("Test")
+        		.lastName("Surname").build();
+    	
+        BookDto book = BookDto.builder()
+        		.id(bookID)
+        		.description("com.vision.api")
+        		.genre("Drama")
+        		.price(new BigDecimal(2.0))
+        		.title("test")
+        		.author(defaultAuthor)
+        		.build();
+        String json = objectMapper.writeValueAsString(book);
+        when(this.bookService.create(book)).thenReturn(bookID);
 
+        //when-then
+        this.mockMvc.perform(put("/api/v1/books/")
+                .contentType(APPLICATION_JSON_UTF8)
+                .content(json))
+                .andExpect(status().isCreated());
+    }
 }

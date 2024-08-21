@@ -9,7 +9,8 @@
   * starter-web 
   * starter-data-jpa
   * H2
-  * lombok
+  * lombok/logback
+  * jCoCo
   * ModuleMapper
   * Spring Entity Validation 
   * Swagger Open API
@@ -57,7 +58,9 @@ open target/site/surefire-report.html
 
 mvn jacoco:report
 open target/site/jacoco/index.html
-```
+``
+
+-![CodeCoverage](CodeCoverage.PNG)
 
 ## Start
 

@@ -2,9 +2,13 @@ package com.vision.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vision.api.dto.AuthorDto;
+import com.vision.api.dto.AuthorResponseDto;
 import com.vision.api.dto.BookDto;
+import com.vision.api.dto.BookResponseDto;
 import com.vision.api.exception.DuplicatedEntityException;
 import com.vision.api.exception.EntityNotFoundException;
+import com.vision.api.model.Author;
+import com.vision.api.model.Book;
 import com.vision.api.service.AuthorService;
 
 import org.junit.jupiter.api.DisplayName;
@@ -25,6 +29,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 
 @SpringBootTest
@@ -166,5 +175,36 @@ public class AuthorControllerTest{
                 .accept(APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
     }
+    
+    @Test
+    @DisplayName("Test 8: get Book list, should return complete Book list")
+    public void test_8_getBookListByAuthorID_ShouldReturn_200() throws Exception {
+    	
+        //given
+    	long existingId =1L;
+    	 //when
+        AuthorResponseDto authorDto = new AuthorResponseDto();
+        authorDto.setId(existingId);
+        authorDto.setFirstName("Test");
+        authorDto.setLastName("Surname");
+        authorDto.setEmail("test@gmail.com");
+        BookResponseDto bookReponseDto = new BookResponseDto();
+        bookReponseDto.setDescription("example");
+        bookReponseDto.setGenre("Comedy");
+        bookReponseDto.setPrice(BigDecimal.TEN);
+        bookReponseDto.setTitle("Example");
+        bookReponseDto.setId(existingId);
+        List<BookResponseDto>list = new ArrayList();
+        list.add(bookReponseDto);
+        authorDto.setBooks(list);
+        
+        given(this.authorService.getBooksByAuthorId(existingId)).willReturn(authorDto);
+
+        //when-then
+        this.mockMvc.perform(get("/api/v1/books/authors/"+existingId)
+                .accept(APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk());
+    }
+
 
 }

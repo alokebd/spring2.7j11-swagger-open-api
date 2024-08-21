@@ -10,7 +10,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.test.context.ActiveProfiles;
 
 import com.vision.api.dto.BookDto;
+import com.vision.api.exception.DuplicatedEntityException;
 import com.vision.api.exception.EntityNotFoundException;
+import com.vision.api.model.Author;
 import com.vision.api.model.Book;
 import com.vision.api.repository.BookRepository;
 import com.vision.api.service.BookService;
@@ -43,7 +45,12 @@ public class BookServiceTest {
 
         //given
         long existingBookId = 0L;
-        Book book1 = Book.builder().id(0L).description("com.vision.api").genre("Terror").title("title").price(BigDecimal.TEN).build();
+        Book book1 = Book.builder()
+        		.id(0L)
+        		.description("com.vision.api")
+        		.genre("Terror")
+        		.title("title")
+        		.price(BigDecimal.TEN).build();
         when(bookRepositoryMock.findById(existingBookId)).thenReturn(Optional.of(book1));
 
         //when
@@ -77,7 +84,12 @@ public class BookServiceTest {
 
         //given
         long existingBookId = 0L;
-        Book book1 = Book.builder().id(existingBookId).description("com.vision.api").genre("Terror").title("title").price(BigDecimal.TEN).build();
+        Book book1 = Book.builder()
+        		.id(existingBookId)
+        		.description("com.vision.api")
+        		.genre("Terror")
+        		.title("title")
+        		.price(BigDecimal.TEN).build();
         when(bookRepositoryMock.findAll()).thenReturn(Arrays.asList(book1));
 
         //when
@@ -94,8 +106,16 @@ public class BookServiceTest {
     void test_4_givenBookData_whenCreateBook_ThenBookIdReturned() {
 
         //given
-        BookDto bookDto1 = BookDto.builder().description("com.vision.api").genre("Terror").title("title").price(BigDecimal.TEN).build();
-        Book book1 = Book.builder().id(0L).description("com.vision.api").genre("Terror").title("title").price(BigDecimal.TEN).build();
+        BookDto bookDto1 = BookDto.builder()
+        		.description("com.vision.api")
+        		.genre("Terror")
+        		.title("title")
+        		.price(BigDecimal.TEN).build();
+        Book book1 = Book.builder()
+        		.id(0L).description("com.vision.api")
+        		.genre("Terror")
+        		.title("title")
+        		.price(BigDecimal.TEN).build();
 
         //when
         when(bookRepositoryMock.save(any(Book.class))).thenReturn(book1);
@@ -111,8 +131,16 @@ public class BookServiceTest {
     void test_5_givenBookIncompleteData_whenCreateBook_ThenExceptionIsThrown() {
 
         //given
-        BookDto bookDto1 = BookDto.builder().description("com.vision.api").genre("Terror").title("title").price(BigDecimal.TEN).build();
-        Book Book1 = Book.builder().description("com.vision.api").genre("Terror").title("title").price(BigDecimal.TEN).build();
+        BookDto bookDto1 = BookDto.builder()
+        		.description("com.vision.api")
+        		.genre("Terror")
+        		.title("title")
+        		.price(BigDecimal.TEN).build();
+        Book Book1 = Book.builder()
+        		.description("com.vision.api")
+        		.genre("Terror")
+        		.title("title")
+        		.price(BigDecimal.TEN).build();
         String errorMsg = "Unable to save an incomplete entity : "+bookDto1;
 
         //when
@@ -121,6 +149,85 @@ public class BookServiceTest {
 
         // then
         assertEquals(errorMsg, throwException.getMessage());
+    }
+    
+    @Test
+    @DisplayName("Test 6: given existing Book to update, then Book is retrieved")
+    void test_6_givenBook_when_update_ThenRetrieved() {
+
+        //given
+        long existingBookId = 0L;
+        Book book1 = Book.builder()
+        		.id(existingBookId)
+        		.description("com.vision.api")
+        		.genre("Terror")
+        		.title("title")
+        		.price(BigDecimal.TEN).build();
+        //when
+        when(bookRepositoryMock.save(any(Book.class))).thenReturn(book1);
+        BookDto bookDto1 = BookDto.builder()
+        		.id(existingBookId)
+        		.description("com.vision.api")
+        		.genre("Terror")
+        		.title("title")
+        		.price(BigDecimal.TEN).build();
+        Long bookId = bookService.update(bookDto1);
+
+        //then
+        assertNotNull(bookId);
+        assertEquals(book1.getId(), bookId);
+    }
+    
+
+    @Test
+    @DisplayName("Test 7: create Book existing, when get existing Book, then exception is thrown")
+    void test_7_givenBook_whenGeExistingBook_ThenExceptionThrown() {
+
+        //given
+        Long existingBookId = 1L;
+        BookDto bookDto1 = BookDto.builder()
+        		.id(existingBookId)
+        		.description("com.vision.api")
+        		.genre("Terror")
+        		.title("title")
+        		.price(BigDecimal.TEN).build();
+        String errorMsg = "Entity Book with id " + existingBookId + " alrebooky exists";
+        when(bookRepositoryMock.findById(existingBookId)).thenThrow(new DuplicatedEntityException(errorMsg));
+
+        //when
+        DuplicatedEntityException throwException = assertThrows(DuplicatedEntityException.class, () ->  bookService.create(bookDto1));
+
+        // then
+        assertEquals(errorMsg, throwException.getMessage());
+    }
+    
+    @Test
+    @DisplayName("Test 8: given Book and Author data, a list of book by author id is returned")
+    void test_8_givenBookData_whenCreateBook_Then_Book_list_Returned() {
+    	//given
+        long existingBookId = 0L;
+        long authorId =1L;
+        Author author1 = Author.builder()
+         		.id(authorId)
+         		.email("test@gmail.com")
+         		.firstName("Test")
+         		.lastName("Surname").build();
+        Book book1 = Book.builder()
+        		.author(author1)
+        		.id(existingBookId)
+        		.description("com.vision.api")
+        		.genre("Terror")
+        		.title("title")
+        		.price(BigDecimal.TEN).build();
+        when(bookRepositoryMock.findAll()).thenReturn(Arrays.asList(book1));
+
+        //when
+        List<BookDto> books = bookService.getAllBooksByAutherId(authorId);
+
+        //then
+        assertNotNull(books);
+        assertFalse(books.isEmpty());
+        assertEquals(book1.getId(), books.get(0).getId());
     }
 
 }
