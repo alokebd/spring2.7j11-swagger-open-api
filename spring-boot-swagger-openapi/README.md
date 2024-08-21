@@ -51,6 +51,7 @@ mvn clean test
 ```
 
 - For test report and code coverage: 
+-![CodeCoverage](CodeCoverage.PNG)
 
 ```
 mvn surefire-report:report
@@ -58,9 +59,7 @@ open target/site/surefire-report.html
 
 mvn jacoco:report
 open target/site/jacoco/index.html
-``
-
--![CodeCoverage](CodeCoverage.PNG)
+```
 
 ## Start
 
