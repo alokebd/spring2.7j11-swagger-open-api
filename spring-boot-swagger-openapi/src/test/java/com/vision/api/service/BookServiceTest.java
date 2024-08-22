@@ -15,8 +15,6 @@ import com.vision.api.exception.EntityNotFoundException;
 import com.vision.api.model.Author;
 import com.vision.api.model.Book;
 import com.vision.api.repository.BookRepository;
-import com.vision.api.service.BookService;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 import static org.mockito.ArgumentMatchers.any;
@@ -112,7 +110,8 @@ public class BookServiceTest {
         		.title("title")
         		.price(BigDecimal.TEN).build();
         Book book1 = Book.builder()
-        		.id(0L).description("com.vision.api")
+        		.id(0L)
+        		.description("com.vision.api")
         		.genre("Terror")
         		.title("title")
         		.price(BigDecimal.TEN).build();

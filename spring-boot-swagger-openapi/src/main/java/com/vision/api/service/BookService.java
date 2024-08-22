@@ -55,7 +55,7 @@ public class BookService {
         return toDto(book);
     }
 
-    @Transactional(readOnly=true)
+    @Transactional(readOnly=true,  timeout=3000)
     public List<BookDto> list() {
         return bookRepository.findAll()
                 .stream()
@@ -63,7 +63,7 @@ public class BookService {
                 .collect(Collectors.toList());
     }
     
-    @Transactional(readOnly=true)
+    @Transactional(readOnly=true, timeout=3000)
     public List<BookDto> getAllBooksByAutherId(Long authorId){
     	//List<Book> books = bookRepository.getBooksByAuthorId(authorId);
     	return bookRepository.findAll()
@@ -74,7 +74,6 @@ public class BookService {
     }
 
     private BookDto toDto(Book book) {
-
         return modelMapper.map(book, BookDto.class);
     }
     

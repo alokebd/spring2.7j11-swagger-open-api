@@ -63,27 +63,24 @@ public class AuthorService {
     	   return modelMapper.map(author, AuthorDto.class);
     }
     
-    
+    private  List<BookResponseDto> getBookResponseByAuthorId(long authorId){
+    	 List<BookDto> books =bookService.getAllBooksByAutherId(authorId);
+     	 List<BookResponseDto> dtos = books
+	   			  .stream()
+	   			  .map(book -> modelMapper.map(book, BookResponseDto.class))
+	   			  .collect(Collectors.toList());
+	   	  return dtos;
+    }
+        
     public AuthorResponseDto getBooksByAuthorId(long authorId) {
-    	  Author author = authorRepository.findById(authorId).orElseThrow(() -> new EntityNotFoundException("Author not found by author id: "+authorId));
-    	  AuthorDto authorDto = modelMapper.map(author, AuthorDto.class);
-    	      		  
-    	  List<BookDto> books =bookService.getAllBooksByAutherId(authorId);
-    	  if (books== null) {
-    		  throw new EntityNotFoundException("Book not found");
-    	  }
-    	  List<BookResponseDto> dtos = books
-    			  .stream()
-    			  .map(book -> modelMapper.map(book, BookResponseDto.class))
-    			  .collect(Collectors.toList());
-
-    	  
+    	  AuthorDto authorDto = this.getAuthorById(authorId);
+       	  List<BookResponseDto> dtos = this.getBookResponseByAuthorId(authorId);  
     	  AuthorResponseDto dto = new AuthorResponseDto();
-    	  dto.setBooks(dtos);
     	  dto.setId(authorDto.getId());
     	  dto.setFirstName(authorDto.getFirstName());
     	  dto.setLastName(authorDto.getLastName());
     	  dto.setEmail(authorDto.getEmail());
+    	  dto.setBooks(dtos);
     	  return dto;
     }
 

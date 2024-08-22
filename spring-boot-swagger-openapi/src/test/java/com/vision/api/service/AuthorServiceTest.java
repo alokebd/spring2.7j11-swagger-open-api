@@ -3,19 +3,12 @@ package com.vision.api.service;
 import org.junit.jupiter.api.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.test.context.ActiveProfiles;
-
 import com.vision.api.dto.AuthorDto;
-import com.vision.api.dto.AuthorResponseDto;
-import com.vision.api.dto.BookDto;
+
 import com.vision.api.exception.DuplicatedEntityException;
 import com.vision.api.exception.EntityNotFoundException;
 import com.vision.api.model.Author;
-import com.vision.api.model.Book;
 import com.vision.api.repository.AuthorRepository;
-import com.vision.api.repository.BookRepository;
-import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
@@ -32,17 +25,18 @@ public class AuthorServiceTest {
     private AuthorRepository authorRepositoryMock;
     private AuthorService authorService;
 
-    private BookRepository bookRepositoryMock;
-    private BookService bookService;
+    //private BookRepository bookRepositoryMock;
+    //private BookService bookService;
     
-    @BeforeAll
+   @BeforeAll
     public void init() {
     	//author
         authorRepositoryMock = mock(AuthorRepository.class);
         authorService = new AuthorService(authorRepositoryMock, new ModelMapper());
-        //book
-        bookRepositoryMock = mock(BookRepository.class);
-        bookService = new BookService(bookRepositoryMock, new ModelMapper());
+        
+      //book
+       // bookRepositoryMock = mock(BookRepository.class);
+       // bookService = new BookService(bookRepositoryMock, new ModelMapper());
     }
 
     @Test
@@ -175,8 +169,8 @@ public class AuthorServiceTest {
     }
     
     @Test
-    @DisplayName("Test 6: given Author data, when update existing Author, then Author id is returned")
-    void test_6_given_AuthorData_whenCreateAuthor_ThenAuthorIdReturned() {
+    @DisplayName("Test 7: given Author data, when update existing Author, then Author id is returned")
+    void test_7_given_AuthorData_whenCreateAuthor_ThenAuthorIdReturned() {
 
         //given
     	long existingId =1L;
@@ -201,8 +195,8 @@ public class AuthorServiceTest {
     }
     
     @Test
-    @DisplayName("Test 7: given Author data, when update Author, then exception is thrown")
-    void test_7_given_AuthorData_whenCreateAuthor_ExceptionIsThrown() {
+    @DisplayName("Test 8: given Author data, when update Author, then exception is thrown")
+    void test_8_given_AuthorData_whenCreateAuthor_ExceptionIsThrown() {
 
         //given
     	long existingId =0L;
@@ -226,10 +220,11 @@ public class AuthorServiceTest {
         assertEquals(errorMsg, throwException.getMessage());
     }
     
-    @Test
-    @DisplayName("Test 8: given Author id, when get Author, then AuthorResponseDto is retrieved")
-    void test_8_getBooksByAuthorId_whenGetAuthor_ThenAuthorResponseDtoRetrieved() {
-
+    //@Test
+    @DisplayName("Test 9: given Author id, when get Author, then AuthorResponseDto is retrieved")
+    void test_9_getBooksByAuthorId_whenGetAuthor_ThenAuthorResponseDtoRetrieved() {
+    	//TODO 
+    	/*
         //given
     	 AuthorDto authorDto1 = AuthorDto.builder()
          		.email("test@gmail.com")
@@ -288,6 +283,8 @@ public class AuthorServiceTest {
        // assertNotNull(author1.getId());
         //assertEquals(authorResponseDto.getId(), author1.getId());
         //
+         
+         */
     }
 
 

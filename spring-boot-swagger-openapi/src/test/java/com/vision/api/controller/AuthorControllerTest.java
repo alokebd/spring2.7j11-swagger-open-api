@@ -177,7 +177,7 @@ public class AuthorControllerTest{
     }
     
     @Test
-    @DisplayName("Test 8: get Book list, should return complete Book list")
+    @DisplayName("Test 8: get Book list for Author, should return complete Book list")
     public void test_8_getBookListByAuthorID_ShouldReturn_200() throws Exception {
     	
         //given
